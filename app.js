@@ -6,10 +6,12 @@ const app = express();
 //Assigning a port to the server
 const port = process.env.PORT || 4000;
 
+app.use('/api', router);
+
 app.get('/', (req, res) => {
-    res.send("Server is running!");
+    res.send("Welcome to my API!");
 })
 
 app.listen(port, () => {
-    console.log('Server running');
+    console.log(`Server running on port ${port}`);
 });
