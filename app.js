@@ -15,14 +15,30 @@ const book = require('./models/bookModel');
 
 bookRouter.route('/Books')
     .get((req, res) => {
-        let responseJson = {hello: "This is my api"};
-        var query = req.query;
-        book.find(query, (err, books) => {
+        let responseJson = { hello: "This is my api" };
+        var query = {};
+        //Ensuring that the user is not just sending in a random query
+        if (req.query.genre) {
+            query.genre = req.query.genre;
+            book.find(query, (err, books) => {
+                if (err) {
+                    res.status(500).send(err);
+                }
+                else {
+                    res.json(books);
+                }
+            })
+        }
+    })
+
+bookRouter.route('/books/:bookId')
+    .get((req, res) => {
+        book.findById(req.params.bookId, (err, book) => {
             if (err) {
                 res.status(500).send(err);
             }
             else {
-                res.json(books);
+                res.json(book);
             }
         })
     })
