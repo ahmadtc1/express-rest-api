@@ -18,8 +18,10 @@ bookRouter.route('/Books')
         let responseJson = { hello: "This is my api" };
         var query = {};
         //Ensuring that the user is not just sending in a random query
-        if (req.query.genre) {
+        if (req.query.genre || req.query.author || req.query.title) {
             query.genre = req.query.genre;
+            query.title = req.query.title;
+            query.author = req.query.author;
             book.find(query, (err, books) => {
                 if (err) {
                     res.status(500).send(err);
