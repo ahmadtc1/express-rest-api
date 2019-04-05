@@ -2,6 +2,8 @@ const express = require('express');
 //Initializing the express application
 const app = express();
 
+const bodyParser = require('body-parser');
+
 const mongoose = require('mongoose');
 
 //Assigning a port to the server
@@ -31,6 +33,11 @@ bookRouter.route('/Books')
                 }
             })
         }
+    })
+
+    .post((req, res) => {
+        let book = new book();
+
     })
 
 bookRouter.route('/books/:bookId')
