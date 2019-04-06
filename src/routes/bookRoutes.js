@@ -87,7 +87,7 @@ function router(Book) {
 
         .delete((req, res) => {
             req.book.remove((err) => {
-                if(err) {
+                if (err) {
                     res.status(500).send(err);
                 }
                 else {
@@ -96,18 +96,24 @@ function router(Book) {
             });
         })
 
+
+    bookRouter.use('/:genre', (req, res, next) => {
+        Book.find(req.params.genre, (err, book) => {
+            if (err) {
+                res.status(500).send(err);
+            }
+            else if (book) {
+                req.book = book;
+                next();
+            }
+            else {
+                res.status(404).send('book not found');
+            }
+        });
+    });
     bookRouter.route('/:genre')
         .get((req, res) => {
-            let query = {};
-            query.genre = req.params.genre;
-            Book.find(query, (err, books) => {
-                if (err) {
-                    res.status(500).send(err);
-                }
-                else {
-                    res.json(books);
-                }
-            })
+            res.json(req.book);
         })
 
     return bookRouter;
