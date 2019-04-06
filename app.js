@@ -19,7 +19,7 @@ const bookRouter = express.Router();
 
 app.use('/api', bookRouter);
 
-const book = require('./models/bookModel');
+const Book = require('./models/bookModel');
 
 bookRouter.route('/Books')
     .get((req, res) => {
@@ -31,7 +31,7 @@ bookRouter.route('/Books')
             query.title = req.query.title;
             query.author = req.query.author;
         }
-        book.find(query, (err, books) => {
+        Book.find(query, (err, books) => {
             if (err) {
                 res.status(500).send(err);
             }
@@ -43,15 +43,16 @@ bookRouter.route('/Books')
     })
 
     .post((req, res) => {
-        let book = new book(req.body);
+        let book = new Book(req.body);
+        book.save();
 
         console.log(book);
-        res.send(book);
+        res.status(201).send(book);
     })
 
 bookRouter.route('/books/:bookId')
     .get((req, res) => {
-        book.findById(req.params.bookId, (err, book) => {
+        Book.findById(req.params.bookId, (err, book) => {
             if (err) {
                 res.status(500).send(err);
             }
