@@ -1,8 +1,9 @@
 const express = require('express');
-const bookRouter = express.Router();
 //const bookController = require('../controllers/bookController');
 
 function router(Book) {
+    const bookRouter = express.Router();
+
     //const { getBooks, getBookById, postBook, getBooksByGenre } = bookController(Book);
     bookRouter.route('/Books')
         .get((req, res) => {
@@ -46,7 +47,7 @@ function router(Book) {
             }
         });
     });
-    bookRouter.route('/books/:bookId')
+    bookRouter.route('/:bookId')
         .get((req, res) => {
             res.json(req.book);
         })
@@ -56,17 +57,38 @@ function router(Book) {
             req.book.author = req.body.author;
             req.book.genre = req.body.genre;
             req.book.read = req.body.read;
-            req.book.save();
+            req.book.save((err) => {
+                if (err) {
+                    res.status(500).send(err);
+                }
+                else {
+                    res.json(req.book);
+                }
+            });
             res.json(req.book);
         })
 
         .patch((req, res) => {
-            
+            if (req.body._id) {
+                delete (req.body._id);
+            }
+            for (var p in req.body) {
+                req.book[p] = req.body[p];
+            }
+            req.book.save((err) => {
+                if (err) {
+                    res.status(500).send(err);
+                }
+                else {
+                    res.json(req.book);
+                }
+            });
         })
 
-    bookRouter.route('/books/:genre')
+    bookRouter.route('/:genre')
         .get((req, res) => {
-            let query = { 'genre': req.params.genre };
+            let query = {};
+            query.genre = req.params.genre;
             Book.find(query, (err, books) => {
                 if (err) {
                     res.status(500).send(err);
