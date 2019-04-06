@@ -1,5 +1,6 @@
 function bookController(Book) {
 
+    //Method for retrieving all books from the database
     function getBooks(req, res) {
         let responseJson = { hello: "This is my api" };
         var query = {};
@@ -19,6 +20,19 @@ function bookController(Book) {
         })
     }
 
+    //Method for retrieving a book by its ID
+    function getBooksById(req, res) {
+        Book.findById(req.params.bookId, (err, book) => {
+            if (err) {
+                res.status(500).send(err);
+            }
+            else {
+                res.json(book);
+            }
+        })
+    }
+
+    //Method for retrieving books of specific genre
     function getBooksByGenre(req, res) {
         let query = {genre: req.params.genre };
         Book.find(query, (err, books) => {
@@ -31,17 +45,6 @@ function bookController(Book) {
         })
     }
 
-    function getBooksById(req, res) {
-        Book.findById(req.params.bookId, (err, book) => {
-            if (err) {
-                res.status(500).send(err);
-            }
-            else {
-                res.json(book);
-            }
-        })
-    }
-
     function postBook(req, res) {
         let book = new Book(req.body);
         book.save();
@@ -49,7 +52,4 @@ function bookController(Book) {
         console.log(book);
         res.status(201).send(book);
     }
-
 }
-
-module.exports = bookController;
