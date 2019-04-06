@@ -85,6 +85,17 @@ function router(Book) {
             });
         })
 
+        .delete((req, res) => {
+            req.book.remove((err) => {
+                if(err) {
+                    res.status(500).send(err);
+                }
+                else {
+                    res.status(204).send("Removed");
+                }
+            });
+        })
+
     bookRouter.route('/:genre')
         .get((req, res) => {
             let query = {};
