@@ -1,9 +1,10 @@
 const express = require('express');
 const bookRouter = express.Router();
 const bookController = require('../controllers/bookController');
-const { getBooks, getBookById, postBook } = bookController(Book);
 
 function router(Book) {
+    const { getBooks, getBookById, postBook } = bookController(Book);
+
     bookRouter.route('/Books')
         .get(getBooks)
 
@@ -12,6 +13,8 @@ function router(Book) {
     bookRouter.route('/books/:bookId')
         .get(getBookById)
 
+    bookRouter.route('/books/:genre')
+        .get(getBooksByGenre)
     return bookRouter;
 }
 

@@ -1,5 +1,3 @@
-
-
 function bookController(Book) {
 
     function getBooks(req, res) {
@@ -19,7 +17,10 @@ function bookController(Book) {
                 res.json(books);
             }
         })
+    }
 
+    function getBooksByGenre() {
+        
     }
 
     function getBooksById(req, res) {
