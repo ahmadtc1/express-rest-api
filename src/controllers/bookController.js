@@ -19,8 +19,16 @@ function bookController(Book) {
         })
     }
 
-    function getBooksByGenre() {
-        
+    function getBooksByGenre(req, res) {
+        let query = {genre: req.params.genre };
+        Book.find(query, (err, books) => {
+            if (err) {
+                res.status(500).send(err);
+            }
+            else {
+                res.json(books);
+            }
+        })
     }
 
     function getBooksById(req, res) {
